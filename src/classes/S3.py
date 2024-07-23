@@ -1,5 +1,5 @@
 import boto3 
-
+from src.utils.external_libs import validate_string
 
 class S3():
     def __init__(self) -> None:
@@ -16,7 +16,7 @@ class S3():
 
         return list_buckets
 
-    def get_list_dir(self, bucket_name: str, s3 = boto3.client('s3'), is_format_output = False) -> list:
+    def get_list_dir(self, bucket_name: str, s3 = boto3.client('s3'), is_format_output = False, prefix='') -> list:
         """
         Lista todos os diretórios (prefixos) de um bucket S3.
 
@@ -29,7 +29,7 @@ class S3():
     
         paginator = s3.get_paginator('list_objects_v2')
     
-        result = paginator.paginate(Bucket=bucket_name)
+        result = paginator.paginate(Bucket=bucket_name, Prefix=prefix)
         
         list_dirs = set()
         
@@ -42,11 +42,13 @@ class S3():
                     for i in range(1, len(prefixos) + 1):
                         if is_format_output:
                             output = f"s3://{bucket_name}/{'/'.join(prefixos[:i]) + '/'}"
-                            list_dirs.add(output)
+                            # Retorna apenas diretorios sem data 
+                            if not validate_string(output):
+                                list_dirs.add(output)
                         else: 
                             list_dirs.add('/'.join(prefixos[:i]) + '/')
         
         return list_dirs
 
-    def is_table():
+    def is_table(self):
         pass

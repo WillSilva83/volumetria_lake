@@ -1,5 +1,5 @@
 import json 
-
+import re
 
 def write_file(data, file_name = "file_output.json", is_json = False, encoding = 'utf-8', ensure_ascii = False, indent = 4):
     ''' Save file '''
@@ -15,3 +15,11 @@ def write_file(data, file_name = "file_output.json", is_json = False, encoding =
     except Exception as e:
         print(f"Erro ao salvar JSON no arquivo. Erro: {e}")
     pass 
+
+
+def validate_string(str_data) -> bool:  
+    ''' validar se possui formato YYYY-MM-DD '''
+    pattern_1 = r'dt_arq|anomes|process_date|dt_incl'
+    pattern_2 = r'\w=\d{2}'
+    
+    return bool(re.search(pattern_1, str_data) or re.search(pattern_2, str_data))
