@@ -14,7 +14,6 @@ class AthenaObj:
         
         return query_string    
 
-
     def get_execution_id(self, athena_client: boto3.client, query_string: str, database : str):
         
         result_config =  's3://test/' #config.OUTPUTLOCATION
@@ -30,7 +29,6 @@ class AthenaObj:
         except Exception as error: 
             print(f"Erro no response do Athena: {error}")
             return None 
-
 
     def get_query_results(self, query_execution_id):
         athena_client = boto3.client('athena')
@@ -48,7 +46,7 @@ class AthenaObj:
         response = athena_client.get_query_results(QueryExecutionId=query_execution_id)
         
         return response
-        
+
 
 
 

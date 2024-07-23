@@ -1,0 +1,14 @@
+[
+    {
+        "Table_Name": "table1_test",
+        "Location": "s3://bucket-tz-destino-teste/table1_test/",
+        "TableType": "EXTERNAL_TABLE",
+        "IsVerify": true
+    },
+    {
+        "Table_Name": "table_test_2",
+        "Location": "s3://bucket-tz-destino-teste/table2_test/",
+        "TableType": "EXTERNAL_TABLE",
+        "IsVerify": true
+    }
+]
