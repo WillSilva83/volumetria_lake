@@ -29,7 +29,7 @@ def extract_data_from_aws(service, bucket = None, ):
 
     if service == 'S3':
          diretorios_s3 = client_s3.get_list_dir("bucket-tz-destino-teste", is_format_output = True)
-         
+
     elif service == 'Glue':
         tabelas_glue = client_glue.get_list_tables("database_test")
         for tabela in tabelas_glue:
@@ -67,9 +67,6 @@ def run(execution_on = True, path_file_s3 = None, path_file_tables = None):
 
 
     pass 
-
-    
-
 
 
 if __name__ == '__main__': 
