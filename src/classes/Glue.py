@@ -1,5 +1,7 @@
 import boto3 
+from src.utils.logging import config_logger
 
+logger = config_logger('App Tables S3 X Athena')
 
 class Glue():
     def __init__(self) -> None:
@@ -24,16 +26,27 @@ class Glue():
                 for table in tables_list:
                     dict_itens = {}
                     
-                    dict_itens["Table_Name"] = table["Name"]
+                    try: 
                     
-                    # Adicionado para padronizar 
-                    if not table["StorageDescriptor"]["Location"].endswith('/'):
-                        table["StorageDescriptor"]["Location"] += '/'
+                        dict_itens["Table_Name"] = table["Name"]
+                        
+                        # Adicionado para padronizar
+                        if not table["StorageDescriptor"]["Location"].endswith('/'):
+                            table["StorageDescriptor"]["Location"] += '/'
+                        
+                        dict_itens["Location"] = table["StorageDescriptor"]["Location"]
+                        dict_itens["TableType"] = table["TableType"]
+                        dict_itens["IsVerify"] = False
+                        output_list.append(dict_itens)
                     
-                    dict_itens["Location"] = table["StorageDescriptor"]["Location"]
-                    dict_itens["TableType"] = table["TableType"]
-                    dict_itens["IsVerify"] = False
-                    output_list.append(dict_itens)
+                    except Exception as e: 
+                        logger.warning("Tabela " + table["Name"] + " não foi adicionada.")
+                        
+                        dict_itens["Table_Error"] = table["Name"]
+                        dict_itens["Location"] = ""
+                        dict_itens["IsVerify"] = False
+                        output_list.append(dict_itens)
+                    
 
         except Exception as e:
             print(f"Erro ao retornar tabelas do Database: {database}. Erro: {e}")
